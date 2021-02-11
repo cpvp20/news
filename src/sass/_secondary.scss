@@ -1,0 +1,17 @@
+
+.span12 {
+	background-color: $primary-color;
+}
+.span9 {
+	background-color: $secondary-color;
+}
+.span6 {
+	background-color: $third-color; 
+}
+.span3 {
+	//background-color: $fourth-color;
+}
+
+.list{
+    @include lista;
+}

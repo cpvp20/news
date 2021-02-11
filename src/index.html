@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <title>Responsive Grid System</title>
+    <link rel="stylesheet" href="assets/styles/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+</head>
+
+<body>
+    <h1>Responsive Grid System</h1>
+    <input type="text"></input>
+    <a class="button" id="searchBtn">GO</a>
+    <div id="container">
+        <h2>{{title}}</h2>
+        <div class="row group">
+
+            {{#each noticia}}
+            <div id="" class="col span3">
+                <div id="" class="card">
+                    <img src="{{urlToImage}}" width="160" />
+                    <h3>{{title}}</h3>
+                    <p>{{description}}</p>
+                    <a href="{{url}}" class="button" target="_blank">Read More</a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+
+
+    </div>
+
+    <ul class="list">
+        <li>Hecho por</li>
+        <li>Carolina</li>
+        <li>Perez-Vargas</li>
+        <li>Pinson</li>
+    </ul>
+
+    <script src="/assets/scripts/main.js"></script>
+</body>
+
+</html>
