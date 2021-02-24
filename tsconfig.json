@@ -3,6 +3,6 @@
     "exclude": ["src/**/*.spec.ts"],
     "compilerOptions": {
       "target": "ES6",
-      "outDir": "dist/assets/scripts"
+      "outDir": "public/assets/scripts"
     }
   }

@@ -4,14 +4,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "start",
     "test": "jasmine",
     "scripts": "gulp"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
     "gulp-typescript": "^6.0.0-alpha.1",
     "gulp-webserver": "^0.9.1",
+    "node-fetch": "^2.6.1",
     "typescript": "^4.1.4"
   },
   "devDependencies": {

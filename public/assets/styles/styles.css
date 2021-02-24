@@ -1,0 +1,103 @@
+.row {
+  clear: both;
+  padding: 0px;
+  width: 100%; }
+
+.col {
+  display: block;
+  float: left;
+  height: 300px;
+  margin: 10px 0% 10px 0%; }
+
+/*solves floating problems, by forcing the section to self clear its children */
+.group:before,
+.group:after {
+  content: "";
+  display: table; }
+
+.group:after {
+  clear: both; }
+
+.span3 {
+  width: 25%; }
+
+.span6 {
+  width: 50%; }
+
+.span9 {
+  width: 75%; }
+
+.span12 {
+  width: 100%; }
+
+/*media queries*/
+@media only screen and (max-width: 600px) {
+  .span3 {
+    width: 100%; }
+  .span6 {
+    width: 100%; }
+  .span9 {
+    width: 100%; }
+  .span12 {
+    width: 100%; } }
+
+.span12 {
+  background-color: red; }
+
+.span9 {
+  background-color: violet; }
+
+.span6 {
+  background-color: purple; }
+
+.list {
+  list-style: none;
+  margin: 0; }
+
+html {
+  font-family: Arial; }
+
+.card {
+  margin: 10px;
+  background-color: pink;
+  border-radius: 10px;
+  height: 300px; }
+
+h1 {
+  font-size: 30px;
+  text-align: center; }
+
+h2 {
+  font-size: 22px;
+  text-align: center; }
+
+h3 {
+  font-size: 14px;
+  text-align: center; }
+
+input {
+  width: 100%; }
+
+p {
+  font-size: 11px;
+  text-align: center; }
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+
+.button {
+  font-size: 12px;
+  text-align: center;
+  background-color: red;
+  padding: 10px;
+  border-radius: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer; }
+
+a {
+  text-decoration: none;
+  color: white; }

@@ -3,7 +3,7 @@ let sass = require('gulp-sass');
 let ts = require('gulp-typescript');
 let webserver = require('gulp-webserver');
 
-const buildPath = 'dist';
+const buildPath = 'public';
 
 gulp.task('styles', function () {
   return gulp.src('src/**/*.scss')
@@ -30,21 +30,23 @@ gulp.task('watch:scripts', gulp.series('scripts', function (done) {
 
 
 gulp.task('html', function () {
-  return gulp.src('src/index.html')
+  return gulp.src('views/index.html')
     .pipe(gulp.dest(buildPath));
 });
 
 gulp.task('watch:html', gulp.series('html', function (done) {
-  gulp.watch('src/**/*.html', gulp.series('html'));
+  gulp.watch('views/**/*.html', gulp.series('html'));
   done();
 }));
 
-gulp.task('serve', function (done) {
+gulp.task('serve', function () {
   return gulp.src(buildPath)  //origen
     .pipe(webserver({
       open: true,
-      liverload: true
+      liverload: true,
+      port: 3000
     })) //destino
 });
 
-gulp.task('default', gulp.parallel('watch:styles', 'watch:scripts', 'watch:html', 'serve'));
+//gulp.task('default', gulp.parallel('watch:styles', 'watch:scripts', 'watch:html', 'serve'));
+gulp.task('default', gulp.parallel('watch:styles', 'watch:scripts', 'watch:html'));

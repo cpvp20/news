@@ -1,0 +1,47 @@
+.row {
+	clear: both;
+	padding: 0px;
+	width: 100%;
+}
+
+.col {
+	display: block;
+	float:left;
+	height: 300px;
+	margin: 10px 0% 10px 0%;
+}
+
+/*solves floating problems, by forcing the section to self clear its children */
+.group:before,
+.group:after { content:""; display:table; }
+.group:after { clear:both;}
+
+$base: 12;
+$col-sizes: 3,
+6,
+9,
+12;
+
+@function getWidth($cols) {
+	@return $cols / $base * 100%;
+}
+
+@each $size in $col-sizes {
+	.span#{$size} {
+		width: getWidth($size);
+	}
+}
+
+
+/*media queries*/
+@media only screen and (max-width: 600px) {
+	@each $size in $col-sizes {
+		.span#{$size} {
+			width: 100%;
+		}
+	}
+}
+
+@import 'variables';
+@import 'mixins';
+@import 'secondary';
