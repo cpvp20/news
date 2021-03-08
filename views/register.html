@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/assets/styles/styles.css">
+</head>
+
+<body>
+
+    <form action="/users" method="post" enctype="multipart/form-data">
+        <h1>Register New User</h1>
+
+        <div class="container">
+
+            <label for="username"><b>Username</b></label>
+            <input class="form-input" type="text" name="username" id="username" required>
+            <br><br>
+            <label for="email"><b>Email</b></label>
+            <input class="form-input" type="text" name="email" id="email" required>
+            <br><br>
+            <label for="password"><b>Password</b></label>
+            <input class="form-input" type="password" name="password" id="password" required>
+            <br><br>
+            <label for="profilePic"><b>Profile image</b></label>
+            <input class="form-input" type="file" name="profilePic" id="profilePic" accept="image/*">
+        </div>
+        <br><br>
+        <button type="submit" class="submitButton">Register</button>
+
+    </form>
+
+</body>
+
+</html>

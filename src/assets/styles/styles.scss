@@ -23,7 +23,7 @@ h3 {
     font-size: 14px;
     text-align: center;
 }
-input {
+.topic-input {
     width: 100%;
 }
 
@@ -52,3 +52,29 @@ a {
     text-decoration: none;
     color: white;
 }
+
+.form-input {
+    width: 50%;
+    font-size: 16px;
+    background: $fourth-color;
+    display: inline-block;
+    border:none;
+}
+
+.submitButton {
+    background-color:red; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+  }
+
+  
+

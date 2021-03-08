@@ -8,7 +8,7 @@ const buildPath = 'public';
 gulp.task('styles', function () {
   return gulp.src('src/**/*.scss')
     .pipe(sass())
-    .pipe(gulp.dest(buildPath + '/assets/styles'));
+    .pipe(gulp.dest(buildPath));
 });
 
 gulp.task('watch:styles', gulp.series('styles', function (done) {
