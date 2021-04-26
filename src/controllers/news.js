@@ -6,7 +6,7 @@ const apiKey = process.env.API_KEY;
 
 class NewsController {
 
-    getNews(res, topic) {
+    getNoticias(res, topic) {
         const url = `${apiUrl}apiKey=${apiKey}&q=${topic}`;
         console.log(url);
         fetch(url)
@@ -25,15 +25,24 @@ class NewsController {
             });
     }
 
-    getAll(req, res) {
+    getHeadlines(req, res) {
         const url = `${apiUrl}/top-headlines?country=mx&apiKey=${apiKey}`;
-        fetch(url).then(response => {
-            res.send(response.data.articles);
-        }).catch(err => {
-            res.send('Failure')
-            res.end();
-        });
-    }
+        console.log(url);
+        fetch(url)
+            .then((response) => {
+                if (response.status == 200) {
+                    return response.text();
+                } else {
+                    return "error when fetching form new API, status was not 200";
+                }
+            })
+            .then((news) => {
+                res.end(news);
+            })
+            .catch((err) => {
+                res.status(err.status).end(err.message);
+            });
+    }  
 
     getById(req, res) {
         res.send('Traer noticia ' + req.params.noticiaID);

@@ -27,6 +27,6 @@ router.get('/', UsersController.getAll);
 
 router.post('/', uploadFile.single('profilePic'), UsersController.createUser);
 
-router.get('/:id', UsersController.getById);
+router.get('/:id', UsersController.getOne);
 
 module.exports = router;

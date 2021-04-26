@@ -5,6 +5,23 @@ const routes = require("./routes");
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const port = process.env.PORT || 3000;
+const socketIo = require('socket.io');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
+const swaggerOptions = {
+    swaggerDefinition: {
+        swagger: "2.0",
+        info: {
+            "title": "news api doc",
+            "description": "api news api",
+            "version": "1.0",
+            "servers": ["http://localhost:3000"]
+        }
+    },
+    apis: ['index.js', 'news/index.js']
+}
+const swaggerDoc = swaggerJsDoc(swaggerOptions);
 
 const handlebars = require('express-handlebars');
 app.engine('handlebars', handlebars());
@@ -15,6 +32,29 @@ app.use(bodyParser.json());
 
 routes(app);
 
-app.listen(port, () => {
+app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
+const server = app.listen(port, () => {
     console.log(`app is listening`);
+});
+
+const io = socketIo(server, {
+    cors: {
+        origin: 'http://localhost:4200',
+        methods: ['GET', 'POST'],
+        allowHeaders: ['Authorization'],
+        credentials: true,
+    }
+});
+
+io.on('connection', socket => {
+
+    const authToken = socket.handshake.headers['Authorization'];
+    console.log("SOCKETS: se ha conectado", authToken);
+
+    socket.on('likedNews', data => {
+        console.log("news liked: ", data);
+
+        socket.broadcast.emit('UserLikedNews',data);
+
+    })
 });
