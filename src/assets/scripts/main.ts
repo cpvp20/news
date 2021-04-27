@@ -2,7 +2,7 @@ declare var Handlebars: any;
 let templateSource = document.getElementById('container').innerHTML;
 let template = Handlebars.compile(templateSource);
 
-let url = "/news/Apple";
+var url = "/news/Apple";
 
 function getNews() {
   return fetch(url)
@@ -55,6 +55,7 @@ document.querySelector('input').addEventListener('keyup', (event: KeyboardEvent)
 
 document.getElementById('searchBtn').addEventListener('click', () => search(searchInputValue));
 
+export {};
 
 
 

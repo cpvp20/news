@@ -7,9 +7,9 @@
 </head>
 
 <body>
+    <h1>Register New User</h1>
 
-    <form action="/users" method="post" enctype="multipart/form-data">
-        <h1>Register New User</h1>
+    <form action="/users" method="POST" enctype="multipart/form-data">
 
         <div class="container">
 
@@ -24,6 +24,7 @@
             <br><br>
             <label for="profilePic"><b>Profile image</b></label>
             <input class="form-input" type="file" name="profilePic" id="profilePic" accept="image/*">
+
         </div>
         <br><br>
         <button type="submit" class="submitButton">Register</button>

@@ -2,10 +2,8 @@ const Database = require('./database');
 
 class User extends Database{
     constructor(){
-        console.log('user model...')
-        super();
-        this.useCollection('users');
-
+        console.log('User model...')
+        super('users');
     }
 
 }

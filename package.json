@@ -6,7 +6,7 @@
   "scripts": {
     "start": "start",
     "test": "jasmine",
-    "scripts": "gulp"
+    "build": "gulp"
   },
   "author": "",
   "license": "ISC",

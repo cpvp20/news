@@ -1,54 +1,46 @@
 const MongoClient = require('mongodb').MongoClient;
 const dotenv = require('dotenv');
+dotenv.config();
 let db;
 let isConnecting;
+const mongo_url = process.env.MONGO_URL;
 
-dotenv.config();
-
-const mongoUrl = process.env.MONGO_URL;
 
 class Database {
 
-    collectionName;
+    collectionName
 
-    constructor() {
-        if (isConnecting) return;
-
-        isConnecting = true;
-
-        MongoClient.connect(mongoUrl, { useUnifiedTopology: true }, (err, client) => {
-            if (err) {
-                console.log("Not connected to database", err);
-                return;
+    constructor (collection) {
+        if (isConnecting) return
+        isConnecting = true
+        MongoClient.connect(mongo_url, {useUnifiedTopology: true}, (err, client) => {
+            console.log(err)
+            if(err) {
+                console.log('Failed to connect to MongoDB')
+                return
             }
-            db = client.db();
-            console.log("Connected to database");
-        });
-
-        setTimeout(() => {
-            console.log("timeout");
-        }, 2000)
+        
+            db = client.db()
+            this.collectionName = collection
+            console.log('Successfully connected to MongoDB')
+        })  
     }
 
-    useCollection(name) {
-        this.collectionName = name;
-    }
-    
-    getCollection(){
-        return db.collection(this.collectionName);
+    async findOne (filters, cb) {
+        return db.collection(this.collectionName).findOne(filters, cb)
     }
 
-    find(filters, cb) {
-        return this.getCollection().find(filters).toArray(cb);
+    async insertOne (obj, cb) {
+        return db.collection(this.collectionName).insertOne(obj, cb)
     }
 
-    findOne(filters, cb) {
-        return this.getCollection().findOne(filters, cb);
+    async updateOne (filters, updates, cb) {
+        return db.collection(this.collectionName).updateOne(filters, updates, cb)
     }
 
-    insertOne(obj, cb) {
-        return this.getCollection().insertOne(obj, cb);
+    async findByToken (token, cb) {
+        return db.collection(this.collectionName).findOne({token: token}, cb)
     }
 }
 
-module.exports = Database;
+module.exports = Database

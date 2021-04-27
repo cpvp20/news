@@ -1,37 +1,34 @@
-let templateSource = document.getElementById('container').innerHTML;
-let template = Handlebars.compile(templateSource);
-let url = "/news/Apple";
-function getNews() {
-    return fetch(url)
-        .then((response) => {
-        if (response.status === 200) {
-            console.log("getNews response will be: ");
-            console.log(response);
-            return response.json();
-        }
-        else {
-            console.log("Error fetching news in getNews function");
-            console.log(response);
-        }
-    })
-        .catch((err) => err);
+function getNews(url) {
+    return new Promise((resolve, reject) => {
+        fetch(url).then(response => response.json()).then(data => {
+            resolve(data);
+        }).catch(error => {
+            reject(error);
+        });
+    });
 }
-function displayNews() {
-    getNews()
-        .then((data) => {
-        console.log(data);
-        document.getElementById('container').innerHTML = template({ title: 'ITESO News App', noticia: data["articles"] });
-    })
-        .catch((err) => console.log(err));
-}
-/*******************************INITIAL CALL BEFORE USER SEARCHES ANYTHING**********************************/
-displayNews();
-/*******************************SEARCH**********************************/
 function search(searchInputValue) {
     //Consultar el endpoint "everything" con el parámetro de búsqueda especificado por el usuario
-    url = `/news/${searchInputValue}`;
-    displayNews(); //Mostrar en un Grid los resultados obtenidos al realizar la búsqueda
-}
+    let url = `https://newsapi.org/v2/everything?q=${searchInputValue}&sortBy=popularity&apiKey=f4e2bfd6e8394664a233b06e29bff473`; //
+    template = Handlebars.compile(templateSource);
+    getNews(url)
+        .then(data => {
+        //Mostrar en un Grid los resultados obtenidos al realizar la búsqueda
+        document.getElementById('container').innerHTML = template({ title: 'ITESO News App', noticia: data['articles'] });
+    }).catch(error => {
+        console.log("error getting news: ", error);
+    });
+} //function search
+/*******************************INITIAL CALL BEFORE USER SEARCHES ANYTHING**********************************/
+let templateSource = document.getElementById('container').innerHTML;
+let template = Handlebars.compile(templateSource);
+getNews("https://newsapi.org/v2/everything?q=Apple&sortBy=popularity&apiKey=f4e2bfd6e8394664a233b06e29bff473")
+    .then(data => {
+    document.getElementById('container').innerHTML = template({ title: 'ITESO News App', noticia: data['articles'] });
+}).catch(error => {
+    console.log("error getting news: ", error);
+});
+/*******************************SEARCH**********************************/
 let searchInputValue = '';
 document.querySelector('input').addEventListener('keyup', (event) => {
     console.log(event.key);

@@ -21,8 +21,6 @@ router.get("/:topic", (req, res) => {
   NewsController.getNews(res, topic);
 });
 
-router.get('/top-headlines',NewsController.getHeadlines);
-
 router.get('/noticias/:id', NewsController.getById);
 
 module.exports = router;

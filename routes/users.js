@@ -1,7 +1,13 @@
 const express = require('express');
 const multer = require('multer');
-const { Database, User } = require('../src/models');
-const { UsersController, NewsController } = require('./../src/controllers');
+const {
+    Database,
+    User
+} = require('../src/models');
+const {
+    UsersController,
+    NewsController
+} = require('./../src/controllers');
 
 const router = express.Router();
 
@@ -25,8 +31,12 @@ const uploadFile = multer({
 
 router.get('/', UsersController.getAll);
 
+router.post('/google', (req, res) => {
+    UsersController.googleLogin(req, res);
+});
+
 router.post('/', uploadFile.single('profilePic'), UsersController.createUser);
 
-router.get('/:id', UsersController.getOne);
+router.get('/:id', UsersController.findOne);
 
 module.exports = router;

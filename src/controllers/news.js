@@ -6,7 +6,7 @@ const apiKey = process.env.API_KEY;
 
 class NewsController {
 
-    getNoticias(res, topic) {
+    getNews(res, topic) {
         const url = `${apiUrl}apiKey=${apiKey}&q=${topic}`;
         console.log(url);
         fetch(url)

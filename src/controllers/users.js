@@ -1,12 +1,13 @@
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
-const {OAuth2Client} = require('google-auth-library');
-
-const User = require('./../models/user');
-const Token = require('./../models/token');
+const fetch = require("node-fetch");
 const {
-    send
-} = require('process');
+    GoogleAuth,
+    OAuth2Client
+} = require('google-auth-library');
+
+const User = require('../models/user');
+const Token = require('./../models/token');
 
 if (process.env.NODE_ENV === 'dev') {
     require('dotenv').config();
@@ -24,56 +25,52 @@ function getHashedPassword(pwd) {
     return hasshedPassword;
 }
 
-
-
 class UsersController {
 
-    register(req, res) {
-
-    }
-
     getAll(req, res) {
-        User.find({}, (err, results) => {
-            res.send(results)
+        User.findOne({
+        }).then(result => {
+            res.send(result);
         }).catch(err => {
             res.status(400).send(err);
         });
     }
 
-    getOne(req, res) {
+    findOne(req, res) {
         User.findOne({
             'email': req.query.email
         }).then(result => {
-            res.send(results);
+            res.send(result);
         }).catch(err => {
             res.status(400).send(err);
         });
     }
 
     async createUser(req, res) {
-        const {
-            username,
-            email,
-            password
-        } = req.body;
+        var newUser;
+        newUser = req.body;
+        newUser = req.file.orginalName;
         if (!req.file) {
             res.end('File not supported');
             return;
         }
 
-        User.insertOne(req.body, (err, result) => {
+        User.insertOne(newUser, (err, result) => {
             if (err) {
-                res.end('User not created. Something went wrong');
+                res.staus(err.status).end('User not created. Something went wrong', err.message);
                 return;
             };
-            res.end('User successfully created');
+            console.log(result);
+            res.status(200).end('User successfully created');
         })
 
     }
 
+
+    /*
     login(req, res) {
-        const hasshedPassword = getHashedPassword(req.body.password);
-        User.validate(req.body.email, hasshedPassword).then(result => {
+        const hashedPassword = getHashedPassword(req.body.password);
+        User.validate(req.body.email, hashedPassword).then(result => {
             if (result) {
                 Token.create(result._id).then(tokenResult => {
                     console.log('token created ', tokenResult);
@@ -91,17 +88,74 @@ class UsersController {
         });
 
     }
+    */
+
+    async findOneAndCreate(filters, data, res) {
+        //buscar user con email del payload
+
+        User.findOne(filters, (err, result) => {
+            if (err) {
+                console.log(err);
+                return null;
+            } else {
+                console.log("Result 1: ", result)
+                //si no existe, crear el record en la BD
+
+                if (!result) {
+                    //Crear Usuario
+                    let newUser = {
+                        first_name: data.given_name,
+                        last_name: data.family_name,
+                        email: data.email,
+                        img: data.picture,
+                        google_id: data.sub
+                    }
+                    User.insertOne(newUser, (err) => {
+                        if (err) {
+                            console.log("Error al insertar: ", err)
+                        } else {
+                            console.log("nuevo usuario insertado exitosamente")
+                        }
+                    })
+                } else {
+                    //si user existe, agregar googleID (si no lo tiene ya)
+
+                    //Checar si tiene googleId
+                    if (result.google_id === '') {
+                        //update google ID
+                        User.updateOne(filters, {
+                            $set: {
+                                google_id: data.sub
+                            }
+                        }, (err) => {
+                            if (err) {
+                                console.log("Error al updateOne", err);
+                            } else {
+                                console.log("Se actualizo con el Google Id exitosamente")
+                            }
+                        })
+                    } else {
+                        console.log("El usuario está bien")
+                    }
+                }
+            }
+        })
+    }
 
     googleLogin(req, res) {
         console.log('datos de google ID recibidos ', req.body.idToken);
         googleClient.verifyIdToken({
-            idToken: OAuth2Client.credentials.idToken,
+            idToken: req.body.idToken //OAuth2Client.credentials.idToken,
         }).then(response => {
             const data = response.getPayload();
+            console.log('Google Response Payload', data)
             //buscar user con email del payload
-            //si user existe, agregar googleID (si no lo tiene ya)
-            //si no existe, crear el record en la BD
-            //generar token de sesion con este userID (e.g. encripta correo)
+            this.findOneAndCreate({
+                email: data.email
+            }, data, res)
+            // FALTA generar token de sesion con este userID (e.g. encripta correo)
+            res.send('ok');
+
         }).catch(err => {
             console.log('failed to verify token', err);
             res.status(400).send('bad credentials');

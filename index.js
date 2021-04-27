@@ -30,7 +30,24 @@ app.set('view engine', 'handlebars');
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
+app.use('/assets', express.static('./dist/assets'));
 routes(app);
+
+app.get('/', (req, res) => {
+    let indexFile = fs.readFileSync("./views/index.html")
+    res.end(indexFile)
+})
+
+app.get('/register', (req, res) => {
+    let registerHtml = fs.readFileSync("./views/register.html")
+    res.end(registerHtml)
+})
+
+app.get('/login', (req, res) => {
+    let loginHtml = fs.readFileSync("./views/login.html")
+    res.end(loginHtml)
+})
+
 
 app.use('/swagger', swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 const server = app.listen(port, () => {
@@ -46,10 +63,11 @@ const io = socketIo(server, {
     }
 });
 
+/*
 io.on('connection', socket => {
 
     const authToken = socket.handshake.headers['Authorization'];
-    console.log("SOCKETS: se ha conectado", authToken);
+    console.log("se ha conectado", authToken);
 
     socket.on('likedNews', data => {
         console.log("news liked: ", data);
@@ -58,3 +76,4 @@ io.on('connection', socket => {
 
     })
 });
+*/
