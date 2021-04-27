@@ -16,13 +16,13 @@ if (process.env.NODE_ENV === 'dev') {
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET);
 
 function getHashedPassword(pwd) {
-    let hasshedPassword;
+    let hashedPassword;
     if (process.env.ENCRYPT === 'bcrypt') {
-        hasshedPassword = bcrypt.hashSync(pwd, 12);
+        hashedPassword = bcrypt.hashSync(pwd, 12);
     } else {
-        hasshedPassword = crypto.scryptSync(pwd, 'salt', 24).toString('hex');
+        hashedPassword = crypto.scryptSync(pwd, 'salt', 24).toString('hex');
     }
-    return hasshedPassword;
+    return hashedPassword;
 }
 
 class UsersController {
